@@ -1,0 +1,42 @@
+{
+    "title":"Demo Video",
+    "path":"assets/videos/demo_video.mp4",
+    "timelines":[
+        {
+            "start":5,
+            "end": 8,
+            "question":{
+                "title":"Q1: from 5 to 8",
+                "answers":[
+                    "Answer 1",
+                    "Answer 2",
+                    "Answer 3"
+                ]
+            }
+        },
+        {
+            "start":15,
+            "end": 20,
+            "question":{
+                "title":"Q1: from 15 to 20",
+                "answers":[
+                    "Answer 1",
+                    "Answer 2",
+                    "Answer 3"
+                ]
+            }
+        },
+        {
+            "start":24,
+            "end": 29,
+            "question":{
+                "title":"Q1: from 24 to 29",
+                "answers":[
+                    "Answer 1",
+                    "Answer 2",
+                    "Answer 3"
+                ]
+            }
+        }
+    ]
+}

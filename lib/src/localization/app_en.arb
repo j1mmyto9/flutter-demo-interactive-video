@@ -1,0 +1,6 @@
+{
+  "appTitle": "demovideo",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
