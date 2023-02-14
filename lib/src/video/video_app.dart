@@ -3,12 +3,19 @@
 import 'dart:math';
 
 import 'package:chewie/chewie.dart';
+import 'package:demovideo/src/question/features/fill_blank/fill_blank_widget.dart';
+import 'package:demovideo/src/question/features/multi_choice/multi_choice_widget.dart';
+import 'package:demovideo/src/question/features/multi_select/multi_select_widget.dart';
 import 'package:demovideo/src/routing/routing.dart';
+import 'package:demovideo/src/video/model/question/fill_blank_model.dart';
+import 'package:demovideo/src/video/model/question/multi_choice_model.dart';
+import 'package:demovideo/src/video/model/question/multi_select_model.dart';
 import 'package:demovideo/src/video/model/video_model.dart';
 import 'package:demovideo/src/widgets/loading.dart';
-import 'package:demovideo/src/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
+import 'model/question/question_type.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoApp extends StatefulWidget {
@@ -108,9 +115,20 @@ class VideoAppState extends State<VideoApp> {
     });
   }
 
-  void onSelectAnswer(int index) {
+  void onSelectAnswer(dynamic value) {
     setState(() {
-      currentQuestion?.question.index = index;
+      switch (currentQuestion?.question.type) {
+        case VideoQuestionType.multipleSelect:
+          (currentQuestion?.question as MultiSelectModel).currentSelect = value;
+          break;
+        case VideoQuestionType.fillBlanks:
+          (currentQuestion?.question as FillBlankModel).currentAnswer = value;
+          break;
+        default:
+          (currentQuestion?.question as MultiChoiceModel).indexCurrent = value;
+          break;
+      }
+
       onToggleExpanded();
     });
   }
@@ -134,21 +152,41 @@ class VideoAppState extends State<VideoApp> {
             const XIndicator(),
           if (currentQuestion != null)
             Positioned(
-              left: left,
-              top: top,
-              right: right,
-              bottom: bottom,
-              child: QuestionWidget(
-                currentQuestion!.question,
-                expanded: expandedQuestion,
-                index: currentQuestion?.question.index,
-                onTap: onToggleExpanded,
-                onTapAt: onSelectAnswer,
-              ),
-            )
+                left: left,
+                top: top,
+                right: right,
+                bottom: bottom,
+                child: _getWidgetByType(currentQuestion!))
         ],
       ),
     );
+  }
+
+  Widget _getWidgetByType(VideoTimeLine currentQuestion) {
+    switch (currentQuestion.question.type) {
+      case VideoQuestionType.multipleSelect:
+        return MultiSelectWidget(
+          (currentQuestion.question as MultiSelectModel),
+          expanded: expandedQuestion,
+          onTap: onToggleExpanded,
+          onTapAt: onSelectAnswer,
+        );
+      case VideoQuestionType.fillBlanks:
+        return FillBlankWidget(
+          (currentQuestion.question as FillBlankModel),
+          expanded: expandedQuestion,
+          onTap: onToggleExpanded,
+          onTapAt: onSelectAnswer,
+        );
+      default:
+        return MultiChoiceWidget(
+          (currentQuestion.question as MultiChoiceModel),
+          expanded: expandedQuestion,
+          index: (currentQuestion.question as MultiChoiceModel).indexCurrent,
+          onTap: onToggleExpanded,
+          onTapAt: onSelectAnswer,
+        );
+    }
   }
 
   @override

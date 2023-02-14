@@ -1,4 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:demovideo/src/video/model/question/base_question_model.dart';
+import 'package:demovideo/src/video/model/question/fill_blank_model.dart';
+import 'package:demovideo/src/video/model/question/multi_choice_model.dart';
+import 'package:demovideo/src/video/model/question/multi_select_model.dart';
+import 'package:demovideo/src/video/model/question/question_type.dart';
+
 class VideoModel {
   String title;
   String path;
@@ -19,33 +25,31 @@ class VideoModel {
         VideoTimeLine(
           10,
           15,
-          question: VideoQuestion("Q1: What kind of berry is this?",
-              answers: ["Blueberry", "Strawberry"]),
+          question: MultiChoiceModel(
+            type: VideoQuestionType.multipleChoice,
+            title: "Q1: What kind of berry is this?",
+            answers: ["Blueberry", "Strawberry"],
+            correctAnswer: 1,
+          ),
         ),
         VideoTimeLine(
           20,
           25,
-          question: VideoQuestion("Q2: from 20 to 25"),
+          question: MultiSelectModel(
+            type: VideoQuestionType.multipleSelect,
+            title: "Highlight the ingredients that have been added so far.",
+            answers: ["Blueberry", "Strawberry", "Mango", "Apple"],
+            correctAnswer: ["Blueberry", "Strawberry"],
+          ),
         ),
         VideoTimeLine(
           30,
           35,
-          question: VideoQuestion("Q3: from 30 to 35"),
-        ),
-        VideoTimeLine(
-          40,
-          45,
-          question: VideoQuestion("Q4: from 40 to 45"),
-        ),
-        VideoTimeLine(
-          50,
-          55,
-          question: VideoQuestion("Q5: from 50 to 55"),
-        ),
-        VideoTimeLine(
-          59,
-          63,
-          question: VideoQuestion("Q6: from 60 to 65"),
+          question: FillBlankModel(
+              type: VideoQuestionType.fillBlanks,
+              title:
+                  "Strawberries and *** berries are mixed with *** and oatmeal *** to make this delicious smoothie",
+              correctAnswer: ["blue", "milk", "cookies"]),
         ),
       ],
     );
@@ -55,7 +59,7 @@ class VideoModel {
 class VideoTimeLine {
   int start;
   int end;
-  VideoQuestion question;
+  BaseQuestionModel question;
 
   bool inRange(int sec) {
     return sec >= start && sec < end;
@@ -66,29 +70,4 @@ class VideoTimeLine {
     this.end, {
     required this.question,
   });
-}
-
-class VideoQuestion {
-  String title;
-  List<String> answers;
-  int correctAnswer;
-  int questionType;
-  int? index;
-  VideoQuestion(
-    this.title, {
-    this.questionType = VideoQuestionType.multipleChoice,
-    this.correctAnswer = 0,
-    this.answers = const [
-      "Answer 1",
-      "Answer 2",
-      "Answer 3",
-    ],
-  });
-}
-
-class VideoQuestionType {
-  static const int multipleChoice = 1;
-  static const int multipleSelect = 2;
-  static const int fillBlanks = 3;
-  static const int dragAndDrop = 4;
 }
