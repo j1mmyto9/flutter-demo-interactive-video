@@ -37,7 +37,7 @@ class VideoModel {
           25,
           question: MultiSelectModel(
             type: VideoQuestionType.multipleSelect,
-            title: "Highlight the ingredients that have been added so far.",
+            title: "Highlight the ingredients\nthat have been added so far.",
             answers: ["Blueberry", "Strawberry", "Mango", "Apple"],
             correctAnswer: ["Blueberry", "Strawberry"],
           ),

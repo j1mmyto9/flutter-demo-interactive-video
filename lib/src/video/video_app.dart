@@ -96,7 +96,7 @@ class VideoAppState extends State<VideoApp> {
         setState(() {
           currentQuestion = e;
           expandedQuestion = false;
-          left = rng.nextInt(400) + 100;
+          left = rng.nextInt(300) + 100;
           top = rng.nextInt(100) + 40;
         });
         return;
@@ -154,9 +154,7 @@ class VideoAppState extends State<VideoApp> {
             Positioned(
                 left: left,
                 top: top,
-                right: right,
-                bottom: bottom,
-                child: _getWidgetByType(currentQuestion!))
+                child: Container(child: _getWidgetByType(currentQuestion!)))
         ],
       ),
     );
